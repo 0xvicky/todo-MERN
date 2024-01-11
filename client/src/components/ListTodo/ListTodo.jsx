@@ -1,11 +1,16 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Todo from "./Todo/Todo";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getTodosAction} from "../../actions/todos";
 
 const ListTodo = () => {
   const {todoList} = useSelector(state => state.todos);
   let arr = ["Buy Milk", "Go Gym", "Study", "Code"];
-  // console.log(todoList);
+  const dispatch = useDispatch();
+  console.log(todoList);
+  useEffect(() => {
+    dispatch(getTodosAction());
+  }, [dispatch]);
 
   return (
     <div className='mx-28'>

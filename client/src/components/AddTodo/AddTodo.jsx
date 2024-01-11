@@ -1,20 +1,17 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {v4 as uuidv4} from "uuid";
-import {addTodo} from "../../store/todos/todoSlice";
+import {addTodoAction} from "../../actions/todos";
 
 const AddTodo = () => {
-  const initialState = {
-    id: "",
-    text: ""
-  };
-  const [todo, setTodo] = useState(initialState);
+  const [todo, setTodo] = useState({text: ""});
   const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(addTodo(todo));
+    dispatch(addTodoAction(todo));
   };
+
   return (
     <div className='mx-auto'>
       <form
@@ -24,7 +21,7 @@ const AddTodo = () => {
           <input
             type='text'
             placeholder='Add Todo'
-            onChange={e => setTodo({id: uuidv4(), text: e.target.value})}
+            onChange={e => setTodo({...todo, text: e.target.value})}
             className='border-2 border-gray-300 rounded-l-md px-4 py-2 w-64 focus:outline-none focus:border-blue-500'
           />
           <button
