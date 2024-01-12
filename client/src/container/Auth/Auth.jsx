@@ -1,7 +1,12 @@
 import React, {useState} from "react";
 import Input from "./components/Input";
+import {GoogleOAuthProvider, GoogleLogin} from "@react-oauth/google";
+import {jwtDecode} from "jwt-decode";
+import {useDispatch} from "react-redux";
+import {setStorageChange} from "../../store/todos/todoSlice";
 
 const Auth = () => {
+  const dispatch = useDispatch();
   const initialFormState = {
     firstName: "",
     lastName: "",
@@ -18,14 +23,21 @@ const Auth = () => {
       [e.target.name]: e.target.value
     }));
   };
-  const handleSubmit = () => {
-    return;
+  const handleSubmit = e => {
+    e.preventDefault();
   };
-  console.log(formData);
+  const handleSuccess = ({credential}) => {
+    const userData = jwtDecode(credential);
+    userData.token = credential;
+    localStorage.setItem("user", JSON.stringify(userData));
+    dispatch(setStorageChange());
+    // console.log(res);
+  };
+  // console.log(formData);
   return (
     <div className='mt-28 flex items-center justify-center'>
       <form
-        className='bg-white p-8 rounded shadow-md w-96'
+        className='bg-white p-8 rounded shadow-md w-96 flex flex-col justify-center space-y-6'
         onSubmit={handleSubmit}>
         <h2 className='text-2xl font-semibold mb-4'>
           {isSignUp ? "Sign Up" : "Sign In"}
@@ -85,9 +97,10 @@ const Auth = () => {
           className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300'
           type='submit'
           onClick={handleSubmit}>
-          {isSignUp ? "Sign In" : "Sign Up"}
+          {isSignUp ? "Sign Up" : "Sign In"}
         </button>
-        <p>
+
+        <p className='mx-auto'>
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             className='text-blue-500 font-semibold px-2 rounded'
@@ -98,6 +111,17 @@ const Auth = () => {
             {isSignUp ? "Sign In" : "Sign Up"}
           </button>
         </p>
+        <button className='mx-auto mt-3'>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_REACT_APP_CLIENT_ID}>
+            <GoogleLogin
+              onSuccess={res => {
+                handleSuccess(res);
+              }}
+              onError={error => {
+                console.log(`Error occured while logging in with google:${error}`);
+              }}></GoogleLogin>
+          </GoogleOAuthProvider>
+        </button>
       </form>
     </div>
   );

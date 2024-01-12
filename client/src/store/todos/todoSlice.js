@@ -16,7 +16,6 @@ const todoSlice = createSlice({
     },
     addTodoSlice(state, action) {
       state.todoList.push(action.payload);
-      state.isChange = !state.isChange;
     },
     updateTodoSlice(state, action) {
       state.todoList.map(todo =>

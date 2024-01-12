@@ -18,8 +18,7 @@ const AddTodo = () => {
     }
   }, [editPost]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (currentId && editPost) {
       const updatedTodo = {
         ...editPost,
@@ -35,14 +34,13 @@ const AddTodo = () => {
 
   return (
     <div className='mx-auto'>
-      <form
-        className='mt-4'
-        onSubmit={handleSubmit}>
+      <div className='mt-4'>
         <div className='flex'>
           <input
             type='text'
             name='todoText'
             placeholder='Add Todo'
+            autoComplete='off'
             value={todo?.text}
             onChange={e => setTodo({...todo, text: e.target.value})}
             className='border-2 border-gray-300 rounded-l-md px-4 py-2 w-64 focus:outline-none focus:border-blue-500'
@@ -50,11 +48,12 @@ const AddTodo = () => {
           <button
             name='submitButton'
             type='submit'
-            className='bg-blue-500 text-white rounded-r-md px-4 py-2 hover:bg-blue-600 transition duration-300'>
+            className='bg-blue-500 text-white rounded-r-md px-4 py-2 hover:bg-blue-600 transition duration-300'
+            onClick={handleSubmit}>
             {editPost && currentId ? "Update" : "Add"}
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

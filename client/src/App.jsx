@@ -3,7 +3,7 @@ import "./App.css";
 import {Navbar} from "./components";
 import {Auth, Home} from "./container";
 import {Routes, Route, useNavigate} from "react-router-dom";
-import {useLocalStorage} from "@uidotdev/usehooks";
+
 import useFetchUser from "./utils/useFetchUser";
 import {useSelector} from "react-redux";
 function App() {

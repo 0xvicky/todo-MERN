@@ -9,13 +9,13 @@ const Todo = ({todo}) => {
   const dispatch = useDispatch();
 
   // Update elapsed time every second
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setElapsedTime(getElapsed(todo?.createdAt));
-  //   }, 1000);
-  //   // Cleanup interval on component unmount
-  //   return () => clearInterval(intervalId);
-  // }, [todo?.createdAt]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setElapsedTime(getElapsed(todo?.createdAt));
+    }, 1000);
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [todo?.createdAt]);
 
   const handleIsDone = e => {
     // console.log(e.target.checked);
