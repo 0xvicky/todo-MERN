@@ -1,6 +1,15 @@
 import React from "react";
+import {setStorageChange} from "../../store/todos/todoSlice";
+import {useDispatch} from "react-redux";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("user");
+    dispatch(setStorageChange());
+  };
+
   return (
     <div>
       <nav className='bg-gradient-to-r from-[#3494e6] to-[#ec6ead] p-4 w-full'>
@@ -18,7 +27,9 @@ const Navbar = () => {
             />
 
             {/* Sign Out button */}
-            <button className='bg-white text-blue-500 px-4 py-2 rounded-md shadow-md hover:bg-blue-500 hover:text-white transition duration-300'>
+            <button
+              className='bg-white text-blue-500 px-4 py-2 rounded-md shadow-md hover:bg-blue-500 hover:text-white transition duration-300'
+              onClick={handleSignOut}>
               Sign Out
             </button>
           </div>

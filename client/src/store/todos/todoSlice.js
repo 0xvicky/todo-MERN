@@ -3,7 +3,8 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
   todoList: [],
   currentId: null,
-  isChange: false
+  isChange: false,
+  storageChange: false
 };
 
 const todoSlice = createSlice({
@@ -29,6 +30,9 @@ const todoSlice = createSlice({
     },
     setCurrentId(state, action) {
       state.currentId = action.payload;
+    },
+    setStorageChange(state) {
+      state.storageChange = !state.storageChange;
     }
   }
 });
@@ -38,6 +42,7 @@ export const {
   getTodosSlice,
   updateTodoSlice,
   deleteTodoSlice,
-  setCurrentId
+  setCurrentId,
+  setStorageChange
 } = todoSlice.actions;
 export default todoSlice.reducer;
