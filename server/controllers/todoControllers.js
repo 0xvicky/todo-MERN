@@ -23,3 +23,25 @@ export const addTodosCntlr = async (req, res) => {
     console.log(`Error occured in adding Todo:${error}`);
   }
 };
+
+export const updateTodoCntlr = async (req, res) => {
+  const {id: _id} = req.params;
+  const todo = req.body;
+  todo.createdAt = new Date();
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    res.status(404).send("No Post with this ID!");
+
+  const updatedTodo = await TodoSchema.findByIdAndUpdate(_id, todo, {new: true});
+  res.json(updatedTodo);
+};
+
+export const deleteTodoCntlr = async (req, res) => {
+  const {id: _id} = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    res.status(404).send("No Post with this ID!");
+
+  const deletedTodo = await TodoSchema.findByIdAndDelete(_id);
+  res.json(deletedTodo);
+};
