@@ -28,7 +28,7 @@ const Navbar = () => {
                 <img
                   className='w-10 h-10 rounded-full border-2 border-white mr-4'
                   src={user?.picture}
-                  alt={user?.name.chartAt(0)}
+                  alt={user?.given_name?.charAt(0)}
                 />
               ) : (
                 <div className='w-10 h-10 rounded-full border-2 border-white mr-4 flex justify-center items-center text-white  text-2xl'>

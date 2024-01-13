@@ -8,3 +8,4 @@ export const updateTodoApi = (todoId, todo) => API.patch(`/todos/update/${todoId
 export const deleteTodoApi = todoId => API.delete(`/todos/delete/${todoId}`);
 
 export const signUpApi = userData => API.post("/user/signUp", userData);
+export const signInApi = userData => API.post("/user/signIn", userData);

@@ -11,15 +11,16 @@ export const signUpCntlr = async (req, res) => {
   try {
     //check if all required fieds are in request
     if (!(firstName && lastName && email && password && confirmPassword))
-      res.status(400).json({msg: "All fields are compulsory"});
+      return res.status(400).json({msg: "All fields are compulsory"});
     //check if user already exist or not using email
     const isExist = await UserSchema.findOne({email});
+    // console.log(isExist);
     if (isExist) {
-      res.status(401).json({msg: "User Already Exist"});
+      return res.status(404).json({msg: "User Already Exist"});
     }
     //check if password in equal to confirm Password
     if (password !== confirmPassword)
-      res.status(400).json({msg: "Passwords are not matching !!☠️☠️"});
+      return res.status(400).json({msg: "Passwords are not matching !!☠️☠️"});
     //encrypt the password
     const encPassword = await bcrypt.hash(password, 10);
     //create user object
@@ -32,12 +33,37 @@ export const signUpCntlr = async (req, res) => {
     const jwtToken = jwt.sign({id: user._id, email}, process.env.JWT_SECRET, {
       expiresIn: "2h"
     });
+    await user.save();
+
     user.token = jwtToken;
     user.password = undefined;
-
     //return user
-    res.status(201).json(user);
+    return res.status(201).json(user);
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
+  }
+};
+
+export const signInCntlr = async (req, res) => {
+  //destructure the data from frontend
+  const {email, password} = req.body;
+  console.log(email);
+  try {
+    //check if user is exist or not, if not then throw error
+    const user = await UserSchema.findOne({email});
+    // console.log(user);
+    if (!user) return res.status(404).json({msg: "User doesn't exist"});
+    //match password if correct by matching db
+    const validPass = await bcrypt.compare(password, user.password);
+    if (!validPass) return res.status(400).json({msg: "Incorrect Password"});
+    //then fetch that user and return it
+    const token = jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET, {
+      expiresIn: "2h"
+    });
+    user.token = token;
+    user.password = undefined;
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(`Error occured while signing in from server:${error}`);
   }
 };

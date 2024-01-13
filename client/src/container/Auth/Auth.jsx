@@ -4,7 +4,7 @@ import {GoogleOAuthProvider, GoogleLogin} from "@react-oauth/google";
 import {jwtDecode} from "jwt-decode";
 import {useDispatch} from "react-redux";
 import {setStorageChange} from "../../store/todos/todoSlice";
-import {signUpAction} from "../../actions/user";
+import {signInAction, signUpAction} from "../../actions/user";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,8 @@ const Auth = () => {
     if (isSignUp) {
       dispatch(signUpAction(formData, dispatch));
     } else {
-      console.log("sign in is ther");
+      // console.log("sign in is ther");
+      dispatch(signInAction(formData, dispatch));
     }
   };
   const handleSuccess = ({credential}) => {

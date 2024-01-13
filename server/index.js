@@ -11,13 +11,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import todoRoutes from "./routes/todo.js";
 import userRoutes from "./routes/user.js";
+import cookieParser from "cookie-parser";
 
 const app = express(); //initialised app
 dotenv.config();
 
+//middlewares
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
+app.use(cookieParser());
 
 //Routes
 app.use("/todos", todoRoutes);
