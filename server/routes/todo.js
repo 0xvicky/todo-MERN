@@ -5,12 +5,13 @@ import {
   updateTodoCntlr,
   deleteTodoCntlr
 } from "../controllers/todoControllers.js";
+import {auth} from "../middleware/auth.js";
 
 const router = express.Router();
 
 router.get("/", getTodosCntlr);
-router.post("/add", addTodosCntlr);
-router.patch("/update/:id", updateTodoCntlr);
-router.delete("/delete/:id", deleteTodoCntlr);
+router.post("/add", auth, addTodosCntlr);
+router.patch("/update/:id", auth, updateTodoCntlr);
+router.delete("/delete/:id", auth, deleteTodoCntlr);
 
 export default router;

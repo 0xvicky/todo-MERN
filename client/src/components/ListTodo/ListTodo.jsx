@@ -6,7 +6,7 @@ import {getTodosAction} from "../../actions/todos";
 const ListTodo = () => {
   const {todoList, isChange} = useSelector(state => state.todos);
   // let arr = ["Buy Milk", "Go Gym", "Study", "Code"];
-  console.log(todoList);
+  // console.log(todoList);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTodosAction());

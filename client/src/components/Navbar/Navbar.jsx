@@ -6,6 +6,7 @@ import useFetchUser from "../../utils/useFetchUser";
 const Navbar = () => {
   const dispatch = useDispatch();
   const user = useFetchUser();
+  const isGoogleLogin = user?.token.length > 500;
 
   const handleSignOut = () => {
     localStorage.removeItem("user");
@@ -22,7 +23,9 @@ const Navbar = () => {
           {/* Right side - Circular image and Sign Out button */}
           {user && (
             <div className='flex items-center space-x-7'>
-              <h1 className='text-white font-bold'>{user?.given_name}</h1>
+              <h1 className='text-white font-bold'>
+                {isGoogleLogin ? user?.given_name : user?.name}
+              </h1>
               {/* Circular image */}
               {user?.picture ? (
                 <img
@@ -32,7 +35,7 @@ const Navbar = () => {
                 />
               ) : (
                 <div className='w-10 h-10 rounded-full border-2 border-white mr-4 flex justify-center items-center text-white  text-2xl'>
-                  {user?.name?.charAt(0)}
+                  {user?.name?.charAt(0).toUpperCase()}
                 </div>
               )}
 

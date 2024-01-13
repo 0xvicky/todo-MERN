@@ -30,15 +30,15 @@ export const signUpCntlr = async (req, res) => {
       password: encPassword
     });
     //sign JWT token for user
-    const jwtToken = jwt.sign({id: user._id, email}, process.env.JWT_SECRET, {
+    const jwtToken = jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET, {
       expiresIn: "2h"
     });
     await user.save();
 
-    user.token = jwtToken;
     user.password = undefined;
+
     //return user
-    return res.status(201).json(user);
+    return res.status(201).json({...user._doc, token: jwtToken});
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -47,7 +47,6 @@ export const signUpCntlr = async (req, res) => {
 export const signInCntlr = async (req, res) => {
   //destructure the data from frontend
   const {email, password} = req.body;
-  console.log(email);
   try {
     //check if user is exist or not, if not then throw error
     const user = await UserSchema.findOne({email});
@@ -60,9 +59,8 @@ export const signInCntlr = async (req, res) => {
     const token = jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET, {
       expiresIn: "2h"
     });
-    user.token = token;
     user.password = undefined;
-    res.status(200).json(user);
+    res.status(200).json({...user._doc, token});
   } catch (error) {
     console.log(`Error occured while signing in from server:${error}`);
   }

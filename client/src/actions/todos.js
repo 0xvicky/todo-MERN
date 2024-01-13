@@ -11,6 +11,7 @@ export const getTodosAction = () => async dispatch => {
     const {data} = await api.getTodosApi();
     dispatch(getTodosSlice(data));
   } catch (error) {
+    console.log(JSON.parse(error));
     console.log(`Error occured in actions while fetching all todos:${error}`);
   }
 };
