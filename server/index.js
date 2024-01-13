@@ -10,6 +10,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import todoRoutes from "./routes/todo.js";
+import userRoutes from "./routes/user.js";
 
 const app = express(); //initialised app
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(cors());
 
 //Routes
 app.use("/todos", todoRoutes);
+app.use("/user", userRoutes);
 
 const CONNECTION = process.env.CONNECTION_URL;
 const PORT = process.env.PORT || 5000;

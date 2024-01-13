@@ -4,6 +4,7 @@ import {GoogleOAuthProvider, GoogleLogin} from "@react-oauth/google";
 import {jwtDecode} from "jwt-decode";
 import {useDispatch} from "react-redux";
 import {setStorageChange} from "../../store/todos/todoSlice";
+import {signUpAction} from "../../actions/user";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,11 @@ const Auth = () => {
   };
   const handleSubmit = e => {
     e.preventDefault();
+    if (isSignUp) {
+      dispatch(signUpAction(formData, dispatch));
+    } else {
+      console.log("sign in is ther");
+    }
   };
   const handleSuccess = ({credential}) => {
     const userData = jwtDecode(credential);
@@ -33,73 +39,72 @@ const Auth = () => {
     dispatch(setStorageChange());
     // console.log(res);
   };
-  // console.log(formData);
+
   return (
     <div className='mt-28 flex items-center justify-center'>
-      <form
-        className='bg-white p-8 rounded shadow-md w-96 flex flex-col justify-center space-y-6'
-        onSubmit={handleSubmit}>
-        <h2 className='text-2xl font-semibold mb-4'>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </h2>
-        {isSignUp && (
-          <div className='mb-4 flex'>
+      <div className='bg-white p-8 rounded shadow-md w-96 flex flex-col justify-center space-y-6'>
+        <form
+          className='flex flex-col justify-center'
+          onSubmit={handleSubmit}>
+          <h2 className='text-2xl font-semibold mb-4'>
+            {isSignUp ? "Sign Up" : "Sign In"}
+          </h2>
+          {isSignUp && (
+            <div className='mb-4 flex space-x-2'>
+              <Input
+                type='text'
+                placeholder='First Name'
+                name='firstName'
+                value={formData.firstName}
+                handleChange={handleChange}
+              />
+              <Input
+                type='text'
+                name='lastName'
+                placeholder='Last Name'
+                value={formData.lastName}
+                handleChange={handleChange}
+              />
+            </div>
+          )}
+
+          <div className='mb-4'>
             <Input
-              type='text'
-              placeholder='First Name'
-              name='firstName'
-              value={formData.firstName}
+              type='email'
+              placeholder='E-Mail'
+              name='email'
+              value={formData.email}
               handleChange={handleChange}
-              half={true}
-            />
-            <Input
-              type='text'
-              name='lastName'
-              placeholder='Last Name'
-              value={formData.lastName}
-              handleChange={handleChange}
-              half={true}
             />
           </div>
-        )}
-
-        <div className='mb-4'>
-          <Input
-            type='email'
-            placeholder='E-Mail'
-            name='email'
-            value={formData.email}
-            handleChange={handleChange}
-          />
-        </div>
-        <div className='mb-4'>
-          <Input
-            type='password'
-            name='password'
-            placeholder='Password'
-            value={formData.password}
-            handleChange={handleChange}
-          />
-        </div>
-        {isSignUp && (
           <div className='mb-4'>
             <Input
               type='password'
-              name='confirmPassword'
-              placeholder='Confirm Password'
-              value={formData.confirmPassword}
+              name='password'
+              placeholder='Password'
+              value={formData.password}
               handleChange={handleChange}
             />
           </div>
-        )}
+          {isSignUp && (
+            <div className='mb-4'>
+              <Input
+                type='password'
+                name='confirmPassword'
+                placeholder='Confirm Password'
+                value={formData.confirmPassword}
+                handleChange={handleChange}
+              />
+            </div>
+          )}
 
-        <button
-          className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300'
-          type='submit'
-          onClick={handleSubmit}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </button>
-
+          <button
+            className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300'
+            type='submit'
+            onClick={handleSubmit}>
+            {isSignUp ? "Sign Up" : "Sign In"}
+          </button>
+        </form>
         <p className='mx-auto'>
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
@@ -122,7 +127,7 @@ const Auth = () => {
               }}></GoogleLogin>
           </GoogleOAuthProvider>
         </button>
-      </form>
+      </div>
     </div>
   );
 };
