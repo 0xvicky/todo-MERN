@@ -6,10 +6,12 @@ import {Routes, Route, useNavigate} from "react-router-dom";
 
 import useFetchUser from "./utils/useFetchUser";
 import {useSelector} from "react-redux";
+
 function App() {
   const {storageChange} = useSelector(state => state.todos);
   const user = useFetchUser();
   const navigate = useNavigate();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     if (user) return navigate("/");

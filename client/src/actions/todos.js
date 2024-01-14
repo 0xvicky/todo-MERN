@@ -9,6 +9,7 @@ import {
 export const getTodosAction = () => async dispatch => {
   try {
     const {data} = await api.getTodosApi();
+    // console.log(data);
     dispatch(getTodosSlice(data));
   } catch (error) {
     console.log(JSON.parse(error));

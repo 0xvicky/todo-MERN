@@ -4,7 +4,8 @@ import TodoSchema from "../models/todoSchema.js";
 export const getTodosCntlr = async (req, res) => {
   try {
     const todos = await TodoSchema.find();
-    res.status(200).json(todos);
+    const userTodos = todos.filter(todo => todo.creator === req.userId);
+    res.status(200).json(userTodos);
   } catch (error) {
     res.status(404).json({msg: "Error occured while fetching Todos."});
     console.log(`Error occured in getTodos Func:${error}`);
@@ -15,6 +16,7 @@ export const addTodosCntlr = async (req, res) => {
   const todo = new TodoSchema(newTodo);
 
   todo.createdAt = new Date();
+  todo.creator = req.userId;
   try {
     todo.save();
     res.status(201).json(todo);

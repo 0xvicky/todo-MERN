@@ -5,6 +5,7 @@ import {jwtDecode} from "jwt-decode";
 import {useDispatch} from "react-redux";
 import {setStorageChange} from "../../store/todos/todoSlice";
 import {signInAction, signUpAction} from "../../actions/user";
+import toast from "react-hot-toast";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -26,11 +27,24 @@ const Auth = () => {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    if (isSignUp) {
-      dispatch(signUpAction(formData, dispatch));
-    } else {
-      // console.log("sign in is ther");
-      dispatch(signInAction(formData, dispatch));
+    try {
+      if (isSignUp) {
+        for (let field in formData) {
+          if (formData[field] === "") {
+            return toast.error("Empty Fields are not allowed");
+          }
+        }
+        dispatch(signUpAction(formData, dispatch));
+      } else {
+        if (formData["email"] === "" || formData["password"] === "") {
+          return toast.error("Empty Fields are not allowed");
+        }
+        // console.log("sign in is ther");
+        dispatch(signInAction(formData, dispatch));
+      }
+      toast.success("User LoggedIn Successfully !");
+    } catch (error) {
+      console.log(error);
     }
   };
   const handleSuccess = ({credential}) => {
@@ -38,6 +52,7 @@ const Auth = () => {
     userData.token = credential;
     localStorage.setItem("user", JSON.stringify(userData));
     dispatch(setStorageChange());
+    toast.success("User LoggedIn Successfully !");
     // console.log(res);
   };
 

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import TodoSchema from "./todoSchema.js";
 
 const userSchema = mongoose.Schema({
   name: {type: String, required: true},

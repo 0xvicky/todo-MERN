@@ -27,6 +27,10 @@ const todoSlice = createSlice({
       state.todoList.filter(todo => todo._id === action.payload);
       state.isChange = !state.isChange;
     },
+    logoutSlice(state) {
+      localStorage.removeItem("user");
+      state.todoList = [];
+    },
     setCurrentId(state, action) {
       state.currentId = action.payload;
     },
@@ -42,6 +46,7 @@ export const {
   updateTodoSlice,
   deleteTodoSlice,
   setCurrentId,
-  setStorageChange
+  setStorageChange,
+  logoutSlice
 } = todoSlice.actions;
 export default todoSlice.reducer;

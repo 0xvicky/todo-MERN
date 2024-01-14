@@ -1,5 +1,5 @@
-import React from "react";
-import {setStorageChange} from "../../store/todos/todoSlice";
+import React, {useEffect} from "react";
+import {logoutSlice, setStorageChange} from "../../store/todos/todoSlice";
 import {useDispatch} from "react-redux";
 import useFetchUser from "../../utils/useFetchUser";
 
@@ -9,7 +9,7 @@ const Navbar = () => {
   const isGoogleLogin = user?.token.length > 500;
 
   const handleSignOut = () => {
-    localStorage.removeItem("user");
+    dispatch(logoutSlice());
     dispatch(setStorageChange());
   };
 

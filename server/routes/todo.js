@@ -9,7 +9,7 @@ import {auth} from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/", getTodosCntlr);
+router.get("/", auth, getTodosCntlr);
 router.post("/add", auth, addTodosCntlr);
 router.patch("/update/:id", auth, updateTodoCntlr);
 router.delete("/delete/:id", auth, deleteTodoCntlr);

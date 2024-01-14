@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const todoSchema = mongoose.Schema({
   text: String,
   createdAt: Date,
+  creator: String,
   isDone: {
     type: Boolean,
     default: false

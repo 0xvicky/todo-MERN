@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({baseURL: "http://localhost:3232"});
+
 API.interceptors.request.use(req => {
   const user = localStorage.getItem("user");
   if (user) {

@@ -3,6 +3,7 @@ import {updateTodoAction, deleteTodoAction} from "../../../actions/todos";
 import {useDispatch} from "react-redux";
 import {getElapsed} from "../../../utils/getElapsedTime";
 import {setCurrentId} from "../../../store/todos/todoSlice";
+import toast from "react-hot-toast";
 
 const Todo = ({todo}) => {
   const [elapsedTime, setElapsedTime] = useState(getElapsed(todo?.createdAt));
@@ -19,11 +20,17 @@ const Todo = ({todo}) => {
 
   const handleIsDone = e => {
     // console.log(e.target.checked);
+
     const updatedTodo = {
       ...todo,
       isDone: e.target.checked
     };
     dispatch(updateTodoAction(todo._id, updatedTodo));
+    if (!todo?.isDone) {
+      toast("Good Job!", {
+        icon: "👏"
+      });
+    }
   };
 
   const handleSetId = () => {
@@ -32,10 +39,11 @@ const Todo = ({todo}) => {
 
   const handleDelete = () => {
     dispatch(deleteTodoAction(todo._id));
+    toast.success("Todo Deleted !");
   };
 
   return (
-    <div className='flex items-center justify-between border-b border-gray-300 py-2 '>
+    <div className='flex items-center justify-between border-b border-gray-300 py-2 space-x-6'>
       <input
         type='checkbox'
         // value={todo?.isDone}
@@ -43,7 +51,9 @@ const Todo = ({todo}) => {
         onChange={handleIsDone}
       />
       {/* Left side - Text of the todo */}
-      <p className='text-gray-800 font-semibold'>{todo?.text}</p>
+      <p className={`text-gray-800 font-semibold ${todo?.isDone && "line-through"}`}>
+        {todo?.text}
+      </p>
       <p className='text-gray-800'>{elapsedTime}</p>
 
       {/* Right side - Edit and Delete buttons */}
